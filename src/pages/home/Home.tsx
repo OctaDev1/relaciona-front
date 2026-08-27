@@ -1,9 +1,8 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { FeatureCard } from '../../components/featurecards/Featurecards';
 import { TeamCard } from '../../components/teamcard/TeamCard';
 import { TestimonialCard } from '../../components/testimonialcard/TestimonialCard';
-import { MENU_ITEMS, TABS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
+import { MENU_ITEMS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -69,7 +68,6 @@ export default function Home() {
 
       <div className="fixed top-0 left-0 w-full h-screen overflow-hidden z-10 bg-gray-50/30">
 
-        {/* Navbar */}
         <div className="absolute top-8 left-0 w-full z-40 flex justify-center px-4">
           <div className="inline-flex items-center p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full scroll-smooth [&::-webkit-scrollbar]:hidden">
             {MENU_ITEMS.map((item) => (
@@ -94,34 +92,101 @@ export default function Home() {
           }}
         >
 
-          {/* SLIDES 1-4 */}
-          {TABS.map((tab) => (
-            <div key={tab.id} className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
-              <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
-                <div className="flex-1 space-y-6 text-center md:text-left">
-                  <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">{tab.title}</h1>
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">{tab.subtitle}</h2>
-                  <div className="pt-4">
-                    <a href={tab.ctaLink} className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
-                      {tab.ctaText}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                  </div>
+          {/* ==================== SLIDE 1: RELACIONA ==================== */}
+          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-6 text-center md:text-left">
+                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Relaciona</h1>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Controle total da sua operação comercial.</h2>
+                <div className="pt-4">
+                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                    Conheça o sistema
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </a>
                 </div>
-                <div className="flex-1 w-full flex justify-center">
-                  <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
-                      <img
-                        src="https://ik.imagekit.io/JohnnieDiniz/logo-relaciona.png?updatedAt=1787844593939"
-                        alt="Logo Relaciona CRM"
-                      />
-                      {getTabIcon(tab.id)}
+              </div>
+              <div className="flex-1 w-full flex justify-center">
+                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-blue-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                  <img
+                    src="https://ik.imagekit.io/JohnnieDiniz/logo-relaciona.png?updatedAt=1787844593939"
+                    alt="Logo Relaciona CRM"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ==================== SLIDE 2: OPORTUNIDADES ==================== */}
+          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-6 text-center md:text-left">
+                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Gestão de Vendas</h1>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Acompanhe cada etapa do seu funil e feche mais negócios.</h2>
+                <div className="pt-4">
+                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                    Explorar funil
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </a>
+                </div>
+              </div>
+              <div className="flex-1 w-full flex justify-center">
+                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                  <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
+                    {getTabIcon('oportunidades')}
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
 
-          {/* SLIDE 5: Funcionalidades */}
+          {/* ==================== SLIDE 3: MÉTRICAS E BI ==================== */}
+          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-6 text-center md:text-left">
+                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Dados Precisos</h1>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Tome decisões baseadas em relatórios gerados em tempo real.</h2>
+                <div className="pt-4">
+                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                    Ver relatórios
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </a>
+                </div>
+              </div>
+              <div className="flex-1 w-full flex justify-center">
+                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-indigo-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                  <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
+                    {getTabIcon('metricas')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ==================== SLIDE 4: GESTÃO DE EQUIPE ==================== */}
+          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-6 text-center md:text-left">
+                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Trabalho Colaborativo</h1>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Organize permissões, delegue tarefas e unifique seu time.</h2>
+                <div className="pt-4">
+                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                    Gerenciar time
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </a>
+                </div>
+              </div>
+              <div className="flex-1 w-full flex justify-center">
+                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-sky-100 to-white shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                  <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
+                    {getTabIcon('equipe')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ==================== SLIDE 5: Funcionalidades ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 border-l border-gray-100 shrink-0">
             <div className="w-full px-6 md:px-16 max-w-7xl mx-auto pt-16">
               <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -149,7 +214,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* SLIDE 6: Equipe */}
+          {/* ==================== SLIDE 6: Equipe ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 border-l border-gray-100 shrink-0">
             <div className="w-full px-6 md:px-16 max-w-7xl mx-auto pt-16">
               <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
@@ -166,7 +231,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* SLIDE 7: Depoimentos */}
+          {/* ==================== SLIDE 7: Depoimentos ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 text-blue-600 relative shrink-0 overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full blur-[120px] pointer-events-none"></div>
             <div className="w-full px-6 md:px-16 max-w-7xl mx-auto relative z-10 pt-16">
@@ -194,7 +259,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* SLIDE 8: Contato & Footer */}
+          {/* ==================== SLIDE 8: Contato & Footer ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 text-white shrink-0 relative">
             <div className="w-full px-6 md:px-16 max-w-6xl mx-auto pt-24 pb-12 flex flex-col h-full justify-between">
 
