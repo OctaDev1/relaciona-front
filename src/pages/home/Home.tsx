@@ -70,18 +70,18 @@ export default function Home() {
       <div className="h-[800vh] w-full relative z-0"></div>
 
       {/* Container Fixo do Slideshow */}
-      <div className="fixed top-0 left-0 w-full h-[100dvh] overflow-hidden z-10 bg-gray-50/30">
+      <div className="fixed top-0 left-0 w-full h-dvh overflow-hidden z-10 bg-gray-50/30">
 
         {/* ==================== NAVBAR RESPONSIVA ==================== */}
         <div className="absolute top-4 md:top-8 left-0 w-full z-40 flex justify-center px-4">
           
           {/* Menu Celular (Dropdown Automático) */}
-          <div className="md:hidden flex flex-col items-center w-full max-w-[240px]">
+          <div className="md:hidden flex flex-col items-center w-full max-w-45">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-full inline-flex items-center justify-between p-1.5 bg-white/95 backdrop-blur-md border border-gray-200 rounded-full shadow-sm"
+              className="inline-flex items-center justify-between p-1.5 bg-white backdrop-blur-md border border-gray-200 rounded-full shadow-sm"
             >
-              <span className="px-4 py-2 rounded-full font-bold text-xs bg-blue-600 text-white shadow-md whitespace-nowrap">
+              <span className="px-4 py-2 rounded-full font-bold text-xs bg-white text-blue-600  whitespace-nowrap">
                 {MENU_ITEMS[currentSlideIndex]?.label || MENU_ITEMS[0].label}
               </span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`w-4 h-4 mx-3 text-gray-500 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : ''}`}>
@@ -146,7 +146,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center order-1 lg:order-2">
-                <div className="w-full max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-[4/3] rounded-3xl md:rounded-4xl bg-gradient-to-br from-blue-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
+                <div className="w-full max-w-60 sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-4/3 rounded-3xl md:rounded-4xl bg-linear-to-br from-blue-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
                   <img
                     src="https://ik.imagekit.io/JohnnieDiniz/logo-relaciona.png?updatedAt=1787844593939"
                     alt="Logo Relaciona CRM"
@@ -171,7 +171,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center order-1 lg:order-2">
-                <div className="w-full max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-[4/3] rounded-3xl md:rounded-4xl bg-gradient-to-br from-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
+                <div className="w-full max-w-60 sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-4/3 rounded-3xl md:rounded-4xl bg-linear-to-br from-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
                   <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('oportunidades')}
                   </div>
@@ -194,7 +194,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center order-1 lg:order-2">
-                <div className="w-full max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-[4/3] rounded-3xl md:rounded-4xl bg-gradient-to-br from-indigo-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
+                <div className="w-full max-w-60 sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-4/3 rounded-3xl md:rounded-4xl bg-linear-to-br from-indigo-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
                   <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('metricas')}
                   </div>
@@ -217,7 +217,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center order-1 lg:order-2">
-                <div className="w-full max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-[4/3] rounded-3xl md:rounded-4xl bg-gradient-to-br from-sky-100 to-white shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
+                <div className="w-full max-w-60 sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square lg:aspect-4/3 rounded-3xl md:rounded-4xl bg-linear-to-br from-sky-100 to-white shadow-2xl border border-gray-100 flex items-center justify-center p-6 md:p-8">
                   <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('equipe')}
                   </div>
@@ -302,7 +302,7 @@ export default function Home() {
           </div>
 
           {/* SLIDE 8: Contato & Footer */}
-          <div className="w-screen h-full flex flex-col justify-start md:justify-center bg-blue-50 text-white shrink-0 overflow-y-auto overflow-x-hidden relative">
+          <div className="w-screen h-full flex flex-col justify-start md:justify-center bg-blue-50 text-white shrink-0 overflow-y-auto overflow-x-hidden relative pt-20">
             <div className="w-full px-4 sm:px-6 md:px-16 max-w-6xl mx-auto pt-24 pb-6 md:py-16 flex flex-col min-h-min md:h-full justify-between">
 
               <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 grow items-center w-full">
@@ -324,7 +324,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex-1 w-full h-100 max-w-md mx-auto ">
+                <div className="flex-1 w-full h-100 max-w-md mx-auto">
                   <form className="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-xl flex flex-col gap-3 md:gap-4">
                     <div>
                       <label className="block text-sm font-medium text-blue-950 mb-1.5">Nome completo</label>
@@ -346,7 +346,7 @@ export default function Home() {
               </div>
 
               {/* Rodapé Responsivo */}
-              <div className="w-full pt-6 md:pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-blue-600 mt-8 md:mt-12">
+              <div className="w-full pt-10 md:pt-10 border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-blue-600 mt-8 md:mt-12 ">
                 <div className="flex items-center gap-2 font-bold text-blue-700">
                   <img
                     src="https://ik.imagekit.io/JohnnieDiniz/logo_sem_fundo.svg?updatedAt=1787844777961"
