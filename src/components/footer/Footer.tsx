@@ -1,12 +1,16 @@
 
 function Footer() {
+
+  const anoAtual = new Date().getFullYear();
+
   return (
-    <div>
-        <footer className="flex items-center justify-between px-8 md:px-16 py-8 bg-white border-t border-gray-200 mt-auto">
+    
+    <footer className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 px-8 md:px-16 py-10 bg-white border-t border-gray-200 mt-auto w-full">
       
-      {/* Esquerda: Logo */}
-      <div className="flex-1 flex justify-start">
-        <a href="/" className="flex flex-col items-center text-blue-500 font-bold text-sm">
+
+      <div className="flex-1 flex justify-center md:justify-start w-full">
+    
+        <a href="/" className="flex flex-col items-center text-blue-500 font-bold text-sm hover:scale-105 transition-transform duration-300">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 mb-1">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
             <circle cx="9" cy="7" r="4"></circle>
@@ -17,22 +21,20 @@ function Footer() {
         </a>
       </div>
 
-      {/* Centro: Links */}
-      <nav className="flex-1 flex justify-center gap-8 text-sm text-gray-700">
-        <a href="#" className="hover:text-blue-500 transition-colors">Termos</a>
-        <a href="#" className="hover:text-blue-500 transition-colors">Privacidade</a>
-        <a href="#" className="hover:text-blue-500 transition-colors">Suporte</a>
-        <a href="#" className="hover:text-blue-500 transition-colors">Contato</a>
+ 
+      <nav className="flex-1 flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-medium text-gray-500 w-full">
+        <a href="#" className="hover:text-blue-600 transition-colors">Termos</a>
+        <a href="#" className="hover:text-blue-600 transition-colors">Privacidade</a>
+        <a href="#" className="hover:text-blue-600 transition-colors">Suporte</a>
+        <a href="#" className="hover:text-blue-600 transition-colors">Contato</a>
       </nav>
 
-      {/* Direita: Copyright */}
-      <div className="flex-1 flex justify-end text-sm text-gray-700">
-        <span>&copy; 2024 Relaciona CRM - Academic Project</span>
+      <div className="flex-1 flex justify-center md:justify-end text-sm text-gray-400 w-full text-center md:text-right">
+        <span>&copy; {anoAtual} Relaciona CRM - Academic Project</span>
       </div>
 
     </footer>
-    </div>
-  )
+  );
 }
 
-export default Footer
+export default Footer;
