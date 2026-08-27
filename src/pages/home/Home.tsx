@@ -1,165 +1,61 @@
+// src/pages/Home.tsx
 import React, { useRef, useState, useEffect } from 'react';
+import { FeatureCard } from '../../components/featurecards/Featurecards';
+import { TeamCard } from '../../components/teamcard/TeamCard';
+import { TestimonialCard } from '../../components/testimonialcard/TestimonialCard';
+import { MENU_ITEMS, TABS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
 
-// --- TIPAGENS ---
-interface FeatureCardProps {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-}
+// Importações dos nossos arquivos separados
 
-interface TestimonialCardProps {
-  company: string;
-  quote: string;
-  author: string;
-  role: string;
-}
 
-type TabId = 'relaciona' | 'oportunidades' | 'metricas' | 'equipe';
-
-interface TabData {
-  id: TabId;
-  label: string;
-  title: string;
-  subtitle: string;
-  ctaText: string;
-  ctaLink: string;
-  imageGradient: string;
-}
-
-// --- DADOS DAS ABAS ---
-const TABS: TabData[] = [
-  {
-    id: 'relaciona',
-    label: 'Relaciona CRM',
-    title: 'Relaciona',
-    subtitle: 'Controle total da sua operação comercial.',
-    ctaText: 'Conheça o sistema',
-    ctaLink: '#',
-    imageGradient: 'from-blue-100 to-blue-50'
-  },
-  {
-    id: 'oportunidades',
-    label: 'Oportunidades',
-    title: 'Gestão de Vendas',
-    subtitle: 'Acompanhe cada etapa do seu funil e feche mais negócios.',
-    ctaText: 'Explorar funil',
-    ctaLink: '#',
-    imageGradient: 'from-cyan-100 to-blue-50'
-  },
-  {
-    id: 'metricas',
-    label: 'Métricas e BI',
-    title: 'Dados Precisos',
-    subtitle: 'Tome decisões baseadas em relatórios gerados em tempo real.',
-    ctaText: 'Ver relatórios',
-    ctaLink: '#',
-    imageGradient: 'from-indigo-100 to-blue-50'
-  },
-  {
-    id: 'equipe',
-    label: 'Gestão de Equipe',
-    title: 'Trabalho Colaborativo',
-    subtitle: 'Organize permissões, delegue tarefas e unifique seu time.',
-    ctaText: 'Gerenciar time',
-    ctaLink: '#',
-    imageGradient: 'from-sky-100 to-white'
-  }
-];
-
-// --- RENDERIZADOR DE ÍCONES ---
-const getTabIcon = (tabId: TabId) => {
-  switch(tabId) {
-    case 'relaciona': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-16 h-16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
-    case 'oportunidades': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-16 h-16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>;
-    case 'metricas': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-16 h-16"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
-    case 'equipe': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-16 h-16"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>;
-  }
-};
-
-// --- COMPONENTES MENORES ---
-const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon }) => {
-  return (
-    <div className="group bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 transition-all duration-300 h-full flex flex-col cursor-pointer">
-      <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-inner group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-        {icon}
-      </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{title}</h3>
-      <p className="text-gray-600 leading-relaxed grow">{description}</p>
-    </div>
-  );
-};
-
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ company, quote, author, role }) => {
-  return (
-    <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700 hover:border-blue-400/50 transition-all duration-300 h-full flex flex-col">
-      <div className="text-blue-400 font-extrabold text-xl mb-6 tracking-wide flex items-center gap-2">
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        {company}
-      </div>
-      <p className="text-gray-300 italic mb-8 grow text-lg leading-relaxed">"{quote}"</p>
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-white font-bold">
-          {author.charAt(0)}
-        </div>
-        <div>
-          <p className="font-bold text-white">{author}</p>
-          <p className="text-sm text-blue-300">{role}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- PÁGINA PRINCIPAL ---
 export default function Home() {
-  const trackRef = useRef<HTMLElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const featureCarouselRef = useRef<HTMLDivElement>(null);
   const testimonialCarouselRef = useRef<HTMLDivElement>(null);
+  const teamCarouselRef = useRef<HTMLDivElement>(null);
 
-  // Total de Telas = 4 abas + 1 tela de Features + 1 tela de Depoimentos = 6
-  const TOTAL_SLIDES = 6; 
+  const TOTAL_SLIDES = 8; 
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!trackRef.current) return;
-      const { top, height } = trackRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll <= 0) return;
       
-      const scrollableDistance = height - windowHeight;
-      let progress = -top / scrollableDistance;
-
+      let progress = scrollY / maxScroll;
       progress = Math.max(0, Math.min(1, progress));
       setScrollProgress(progress);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Pequeno delay para garantir o cálculo correto ao carregar a página
-    setTimeout(handleScroll, 50);
-    
+    setTimeout(handleScroll, 100); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Determina qual aba está ativa na pílula
-  const currentSlideIndex = Math.round(scrollProgress * (TOTAL_SLIDES - 1));
-  const activeTabId = currentSlideIndex < TABS.length ? TABS[currentSlideIndex].id : null;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (teamCarouselRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = teamCarouselRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          teamCarouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          teamCarouselRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+        }
+      }
+    }, 3500); 
+    return () => clearInterval(interval);
+  }, []);
 
-  // Função para navegar pela pílula
-  const scrollToTab = (index: number) => {
-    if (!trackRef.current) return;
-    const { top } = trackRef.current.getBoundingClientRect();
-    const scrollableDistance = trackRef.current.scrollHeight - window.innerHeight;
-    
-    // A fórmula precisa saber que há 6 telas no total para a porcentagem bater
+  const currentSlideIndex = Math.round(scrollProgress * (TOTAL_SLIDES - 1));
+
+  const scrollToSlide = (index: number) => {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const targetProgress = index / (TOTAL_SLIDES - 1);
-    const targetY = window.scrollY + top + (targetProgress * scrollableDistance);
-    
+    const targetY = targetProgress * maxScroll;
     window.scrollTo({ top: targetY, behavior: 'smooth' });
   };
 
-  // Rolagem dos carrosséis internos (setas)
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
     if (ref.current) {
       const scrollAmount = ref.current.clientWidth; 
@@ -170,192 +66,197 @@ export default function Home() {
   const maxTranslate = 100 - (100 / TOTAL_SLIDES);
 
   return (
-    // Removido o 'overflow-hidden' global para permitir o scroll vertical nativo
-    <div className="font-sans bg-white">
+    <div className="bg-slate-950 font-sans">
       
-      {/* 
-        A MÁGICA DO SLIDESHOW ACONTECE AQUI.
-        Aumentamos para h-[600vh] pois temos 6 telas.
-      */}
-      <section ref={trackRef} className="relative h-[600vh] bg-white">
+      <div className="h-[800vh] w-full relative z-0"></div>
+
+      <div className="fixed top-0 left-0 w-full h-screen overflow-hidden z-10 bg-gray-50/30">
         
-        {/* A janela da câmera (Sticky) que prende as seções na tela */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-gray-50/30">
+        {/* Navbar */}
+        <div className="absolute top-8 left-0 w-full z-40 flex justify-center px-4">
+          <div className="inline-flex items-center p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full scroll-smooth [&::-webkit-scrollbar]:hidden">
+            {MENU_ITEMS.map((item) => (
+              <button
+                key={item.index}
+                onClick={() => scrollToSlide(item.index)}
+                className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full font-bold text-sm transition-all duration-300 whitespace-nowrap ${
+                  currentSlideIndex === item.index ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Trilho Horizontal */}
+        <div
+          className="flex h-full transition-transform duration-100 ease-out will-change-transform"
+          style={{
+            width: `${TOTAL_SLIDES * 100}vw`,
+            transform: `translateX(-${scrollProgress * maxTranslate}%)`
+          }}
+        >
           
-          {/* NAVBAR PÍLULA: Fixa no topo. */}
-          <div className="absolute top-8 left-0 w-full z-40 flex justify-center px-4">
-            <div className="inline-flex items-center p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full">
-              {TABS.map((tab, index) => (
-                <button
-                  key={tab.id}
-                  onClick={() => scrollToTab(index)}
-                  className={`px-5 md:px-6 py-2 md:py-2.5 rounded-full font-bold text-sm transition-all duration-300 whitespace-nowrap ${
-                    activeTabId === tab.id
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+          {/* SLIDES 1-4 */}
+          {TABS.map((tab) => (
+            <div key={tab.id} className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-white shrink-0">
+              <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
+                <div className="flex-1 space-y-6 text-center md:text-left">
+                  <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">{tab.title}</h1>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">{tab.subtitle}</h2>
+                  <div className="pt-4">
+                    <a href={tab.ctaLink} className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                      {tab.ctaText}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </a>
+                  </div>
+                </div>
+                <div className="flex-1 w-full flex justify-center">
+                  <div className={`w-full max-w-lg aspect-4/3 rounded-3xl bg-linear-to-br ${tab.imageGradient} shadow-inner border border-gray-100 flex items-center justify-center p-8`}>
+                      <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
+                        {getTabIcon(tab.id)}
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* SLIDE 5: Funcionalidades */}
+          <div className="w-screen h-full flex items-center justify-center bg-gray-50 border-l border-gray-100 shrink-0">
+            <div className="w-full px-6 md:px-16 max-w-7xl mx-auto pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                  <h2 className="text-4xl font-bold text-gray-900 mb-3">Tudo o que seu time precisa</h2>
+                  <p className="text-gray-600 text-xl">Deslize para ver as funcionalidades desenvolvidas para o seu comercial.</p>
+                </div>
+                <div className="flex gap-3">
+                  <button onClick={() => scroll(featureCarouselRef, 'left')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 transition-all shadow-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                  <button onClick={() => scroll(featureCarouselRef, 'right')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 transition-all shadow-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                </div>
+              </div>
+              <div ref={featureCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+                {[
+                  { title: "Gestão de Clientes", description: "Centralize todas as informações de contato, histórico e dados relevantes dos seus clientes.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> },
+                  { title: "Oportunidades", description: "Acompanhe o funil de vendas e gerencie cada etapa das suas oportunidades de negócio.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg> },
+                  { title: "Controle de Usuários", description: "Organize os dados e as permissões de acesso da sua equipe para um trabalho seguro.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> },
+                  { title: "Integração via API", description: "API REST pronta para conectar o CRM a outras ferramentas da sua empresa.", icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> }
+                ].map((feat, index) => (
+                  <div key={index} className="snap-start shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                    <FeatureCard title={feat.title} description={feat.description} icon={feat.icon} />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* O "Trilho" do trem que puxa as 6 telas para o lado */}
-          <div
-            className="flex h-full will-change-transform"
-            style={{
-              width: `${TOTAL_SLIDES * 100}vw`, // O trilho agora tem 600vw
-              transform: `translateX(-${scrollProgress * maxTranslate}%)`,
-              transition: 'transform 0.1s ease-out'
-            }}
-          >
-            
-            {/* TELAS 1 a 4 (As Abas Originais) */}
-            {TABS.map((tab) => (
-              <div key={tab.id} className="w-screen h-full flex items-center justify-center px-6 md:px-16 pt-16 shrink-0">
-                <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24">
-                  <div className="flex-1 space-y-6 text-center md:text-left">
-                    <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">
-                      {tab.title}
-                    </h1>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                      {tab.subtitle}
-                    </h2>
-                    <div className="pt-4">
-                      <a 
-                        href={tab.ctaLink}
-                        className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group"
-                      >
-                        {tab.ctaText}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform">
-                          <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
+          {/* SLIDE 6: Equipe */}
+          <div className="w-screen h-full flex items-center justify-center bg-blue-50/50 border-l border-gray-100 shrink-0">
+            <div className="w-full px-6 md:px-16 max-w-7xl mx-auto pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+                <div>
+                  <h2 className="text-4xl font-bold text-gray-900 mb-2">Quem constrói o Relaciona</h2>
+                  <p className="text-gray-600 text-lg">Conheça as mentes por trás do desenvolvimento do nosso CRM.</p>
+                </div>
+              </div>
+              <div ref={teamCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+                {TEAM_MEMBERS.map((member, index) => (
+                  <TeamCard key={index} {...member} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 7: Depoimentos */}
+          <div className="w-screen h-full flex items-center justify-center bg-slate-900 text-white relative shrink-0 overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-blue-600/10 blur-[120px] pointer-events-none"></div>
+            <div className="w-full px-6 md:px-16 max-w-7xl mx-auto relative z-10 pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                  <h2 className="text-4xl font-bold mb-3">Quem usa, recomenda</h2>
+                  <p className="text-slate-400 text-xl">Veja como o Relaciona tem transformado o processo comercial de outras empresas.</p>
+                </div>
+                <div className="flex gap-3">
+                  <button onClick={() => scroll(testimonialCarouselRef, 'left')} className="p-3 bg-slate-800 border border-slate-700 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                  <button onClick={() => scroll(testimonialCarouselRef, 'right')} className="p-3 bg-slate-800 border border-slate-700 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                </div>
+              </div>
+              <div ref={testimonialCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+                {[
+                  { company: "TechSolutions", quote: "Desde que implementamos o Relaciona, abandonamos nossas planilhas confusas. A visualização das oportunidades nos ajudou a dobrar nossos fechamentos mensais.", author: "Carlos Mendes", role: "Diretor Comercial" },
+                  { company: "Inova Varejo", quote: "A facilidade de uso do sistema impressiona. Nossa equipe aprendeu a usar no primeiro dia, e a integração via API com nosso ERP foi perfeita.", author: "Ana Beatriz", role: "Gerente de Operações" },
+                  { company: "Global Logistics", quote: "O controle de usuários é exatamente o que precisávamos. Cada representante só acessa seus próprios clientes com total segurança.", author: "Fernando Costa", role: "CEO" }
+                ].map((test, index) => (
+                  <div key={index} className="snap-start shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                    <TestimonialCard {...test} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 8: Contato & Footer */}
+          <div className="w-screen h-full flex items-center justify-center bg-slate-950 text-white shrink-0 relative">
+            <div className="w-full px-6 md:px-16 max-w-6xl mx-auto pt-24 pb-12 flex flex-col h-full justify-between">
+              
+              <div className="flex flex-col md:flex-row gap-16 grow items-center">
+                <div className="flex-1 space-y-8">
+                  <h2 className="text-5xl font-extrabold text-white">Pronto para transformar suas vendas?</h2>
+                  <p className="text-slate-400 text-xl leading-relaxed">
+                    Entre em contato com a nossa equipe hoje mesmo e descubra como o Relaciona pode automatizar o seu negócio.
+                  </p>
+                  <div className="pt-4">
+                    <p className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Siga nossas redes</p>
+                    <div className="flex gap-4">
+                      <a href="#" className="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                      </a>
+                      <a href="#" className="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                       </a>
                     </div>
                   </div>
-                  <div className="flex-1 w-full flex justify-center">
-                    <div className={`w-full max-w-lg aspect-4/3 rounded-3xl bg-linear-to-br ${tab.imageGradient} shadow-inner border border-gray-100 flex items-center justify-center p-8`}>
-                        <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
-                          {getTabIcon(tab.id)}
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {/* TELA 5: FUNCIONALIDADES */}
-            <div className="w-screen h-full flex items-center justify-center bg-gray-50 border-l border-gray-100 shrink-0">
-              <div className="w-full px-6 md:px-16 max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                  <div>
-                    <h2 className="text-4xl font-bold text-gray-900 mb-3">Tudo o que seu time precisa</h2>
-                    <p className="text-gray-600 text-xl">Deslize para ver as funcionalidades desenvolvidas para o seu comercial.</p>
-                  </div>
-                  
-                  {/* Botões do Carrossel de Funcionalidades */}
-                  <div className="flex gap-3">
-                    <button onClick={() => scroll(featureCarouselRef, 'left')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    </button>
-                    <button onClick={() => scroll(featureCarouselRef, 'right')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </button>
-                  </div>
                 </div>
 
-                <div ref={featureCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
-                  {[
-                    {
-                      title: "Gestão de Clientes",
-                      description: "Centralize todas as informações de contato, histórico e dados relevantes dos seus clientes em um único lugar.",
-                      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    },
-                    {
-                      title: "Oportunidades",
-                      description: "Acompanhe o funil de vendas e gerencie cada etapa das suas oportunidades de negócio com facilidade e precisão.",
-                      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
-                    },
-                    {
-                      title: "Controle de Usuários",
-                      description: "Organize os dados e as permissões de acesso da sua equipe para um trabalho muito mais seguro e colaborativo.",
-                      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                    },
-                    {
-                      title: "Integração via API",
-                      description: "API REST robusta construída em Java + Spring Boot, pronta para conectar o CRM a outras ferramentas da sua empresa.",
-                      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                    },
-                    {
-                      title: "Relatórios Ágeis",
-                      description: "Gere métricas em tempo real sobre o desempenho da sua equipe e as conversões das suas campanhas.",
-                      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    }
-                  ].map((feat, index) => (
-                    <div key={index} className="snap-start shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
-                      <FeatureCard title={feat.title} description={feat.description} icon={feat.icon} />
+                <div className="flex-1 w-full max-w-md">
+                  <form className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl flex flex-col gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1.5">Nome completo</label>
+                      <input type="text" placeholder="Ex: Maria Silva" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
                     </div>
-                  ))}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1.5">E-mail corporativo</label>
+                      <input type="email" placeholder="maria@empresa.com" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-1.5">Mensagem</label>
+                      <textarea rows={4} placeholder="Como podemos ajudar?" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none"></textarea>
+                    </div>
+                    <button type="button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all mt-2">
+                      Enviar mensagem
+                    </button>
+                  </form>
                 </div>
               </div>
+
+              <div className="w-full pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 mt-12">
+                <div className="flex items-center gap-2 font-bold text-slate-300">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                  Relaciona CRM
+                </div>
+                <p>© 2026 Relaciona CRM. Todos os direitos reservados.</p>
+                <div className="flex gap-4">
+                  <a href="#" className="hover:text-blue-400 transition-colors">Termos</a>
+                  <a href="#" className="hover:text-blue-400 transition-colors">Privacidade</a>
+                </div>
+              </div>
+
             </div>
-
-            {/* TELA 6: DEPOIMENTOS */}
-            <div className="w-screen h-full flex items-center justify-center bg-slate-900 text-white relative shrink-0 overflow-hidden">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-blue-600/10 blur-[120px] pointer-events-none"></div>
-
-              <div className="w-full px-6 md:px-16 max-w-7xl mx-auto relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                  <div>
-                    <h2 className="text-4xl font-bold mb-3">Quem usa, recomenda</h2>
-                    <p className="text-slate-400 text-xl">Veja como o Relaciona tem transformado o processo comercial de outras empresas.</p>
-                  </div>
-                  
-                  {/* Botões do Carrossel de Depoimentos */}
-                  <div className="flex gap-3">
-                    <button onClick={() => scroll(testimonialCarouselRef, 'left')} className="p-3 bg-slate-800 border border-slate-700 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    </button>
-                    <button onClick={() => scroll(testimonialCarouselRef, 'right')} className="p-3 bg-slate-800 border border-slate-700 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </button>
-                  </div>
-                </div>
-
-                <div ref={testimonialCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
-                  {[
-                    {
-                      company: "TechSolutions",
-                      quote: "Desde que implementamos o Relaciona, abandonamos nossas planilhas confusas. A visualização das oportunidades nos ajudou a dobrar nossos fechamentos mensais.",
-                      author: "Carlos Mendes",
-                      role: "Diretor Comercial"
-                    },
-                    {
-                      company: "Inova Varejo",
-                      quote: "A facilidade de uso do sistema impressiona. Nossa equipe aprendeu a usar no primeiro dia, e a integração via API com nosso ERP foi perfeita graças ao backend robusto.",
-                      author: "Ana Beatriz",
-                      role: "Gerente de Operações"
-                    },
-                    {
-                      company: "Global Logistics",
-                      quote: "O controle de usuários é exatamente o que precisávamos. Cada representante só acessa seus próprios clientes, garantindo a segurança dos dados da nossa matriz.",
-                      author: "Fernando Costa",
-                      role: "CEO"
-                    }
-                  ].map((test, index) => (
-                    <div key={index} className="snap-start shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
-                      <TestimonialCard {...test} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
           </div>
-        </div>
-      </section>
 
+        </div>
+      </div>
     </div>
   );
 }
