@@ -13,6 +13,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOportunidadesOpen, setIsOportunidadesOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 
   const featureCarouselRef = useRef<HTMLDivElement>(null);
@@ -76,20 +77,54 @@ export default function Home() {
 
       <div className="fixed top-0 left-0 w-full h-screen overflow-hidden z-10 bg-gray-50/30">
 
-        {/* Mobile (iPhone SE 375px): menu compacto com fonte reduzida; md (iPad Mini 768px): espaçamento maior */}
-        <div className="absolute top-4 sm:top-8 left-0 w-full z-40 flex justify-center px-2 sm:px-4">
-          <div className="inline-flex items-center p-1 sm:p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full scroll-smooth [&::-webkit-scrollbar]:hidden">
+        <div className="absolute top-4 sm:top-8 left-0 w-full z-40 flex justify-center px-4">
+          
+          {/* Mobile Menu (Dropdown Card) */}
+          <div className="relative md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex items-center gap-2 px-5 py-3 bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg font-bold text-sm text-blue-600 transition-all duration-300"
+            >
+              <span>{MENU_ITEMS.find(item => item.index === currentSlideIndex)?.label || 'Menu'}</span>
+              <svg className={`w-4 h-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            
+            {isMenuOpen && (
+              <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md border border-gray-200 rounded-2xl shadow-xl w-64 p-2 flex flex-col gap-1 max-h-[60vh] overflow-y-auto">
+                {MENU_ITEMS.map((item) => (
+                  <button
+                    key={item.index}
+                    onClick={() => {
+                      scrollToSlide(item.index);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`px-4 py-2.5 text-left rounded-xl text-sm font-bold transition-all ${
+                      currentSlideIndex === item.index
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Menu (Inline List) */}
+          <div className="hidden md:inline-flex items-center p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full scroll-smooth [&::-webkit-scrollbar]:hidden">
             {MENU_ITEMS.map((item) => (
               <button
                 key={item.index}
                 onClick={() => scrollToSlide(item.index)}
-                className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap ${currentSlideIndex === item.index ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
+                className={`px-4 lg:px-5 py-2 lg:py-2.5 rounded-full font-bold text-xs lg:text-sm transition-all duration-300 whitespace-nowrap ${currentSlideIndex === item.index ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
                   }`}
               >
                 {item.label}
               </button>
             ))}
           </div>
+
         </div>
 
         {/* Trilho Horizontal */}
@@ -102,8 +137,8 @@ export default function Home() {
         >
 
           {/* ==================== SLIDE 1: RELACIONA ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full min-h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 lg:gap-24 py-24">
               <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Relaciona</h1>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Controle total da sua operação comercial.</h2>
@@ -131,8 +166,8 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 2: OPORTUNIDADES ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full min-h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 lg:gap-24 py-24">
               <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Gestão de Vendas</h1>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Acompanhe cada etapa do seu funil e feche mais negócios.</h2>
@@ -157,8 +192,8 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 3: MÉTRICAS E BI ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full min-h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 lg:gap-24 py-24">
               <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Dados Precisos</h1>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Tome decisões baseadas em relatórios gerados em tempo real.</h2>
@@ -183,8 +218,8 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 4: GESTÃO DE EQUIPE ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full min-h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 lg:gap-24 py-24">
               <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Trabalho Colaborativo</h1>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Organize permissões, delegue tarefas e unifique seu time.</h2>
@@ -206,8 +241,8 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 5: Funcionalidades ==================== */}
-          <div className="w-screen h-full flex items-center justify-center bg-blue-50 border-l border-gray-100 shrink-0">
-            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto pt-16">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none bg-blue-50 border-l border-gray-100 shrink-0">
+            <div className="w-full min-h-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto py-24 flex flex-col justify-center">
               <div className="flex flex-col md:flex-row justify-between items-end mb-8 sm:mb-12 gap-4 sm:gap-6">
                 <div>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-2 sm:mb-3">Tudo o que seu time precisa</h2>
@@ -234,8 +269,8 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 6: Equipe ==================== */}
-          <div className="w-screen h-full flex items-center justify-center bg-blue-50 border-l border-gray-100 shrink-0">
-            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto pt-16">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none bg-blue-50 border-l border-gray-100 shrink-0">
+            <div className="w-full min-h-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto py-24 flex flex-col justify-center">
               <div className="flex flex-col md:flex-row justify-between items-end mb-6 sm:mb-10 gap-4 sm:gap-6">
                 <div>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-2">Quem constrói o Relaciona</h2>
@@ -251,9 +286,9 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 7: Depoimentos ==================== */}
-          <div className="w-screen h-full flex items-center justify-center bg-blue-50 text-blue-600 relative shrink-0 overflow-hidden">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none bg-blue-50 text-blue-600 relative shrink-0">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full blur-[120px] pointer-events-none"></div>
-            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto relative z-10 pt-16">
+            <div className="w-full min-h-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto relative z-10 py-24 flex flex-col justify-center">
               <div className="flex flex-col md:flex-row justify-between items-end mb-8 sm:mb-12 gap-4 sm:gap-6">
                 <div>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3">Quem usa, recomenda</h2>
@@ -279,62 +314,62 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 8: Contato & Footer ==================== */}
-          <div className="w-screen h-full flex items-center justify-center bg-blue-50 text-white shrink-0 relative">
-            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-6xl mx-auto pt-16 sm:pt-24 pb-12 flex flex-col h-full justify-between">
+          <div className="w-screen h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none bg-blue-50 text-white shrink-0 relative">
+            <div className="w-full min-h-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-6xl mx-auto pt-20 pb-6 flex flex-col justify-between">
 
-              <div className="flex flex-col md:flex-row gap-8 sm:gap-12 lg:gap-16 grow items-center">
-                <div className="flex-1 space-y-4 sm:space-y-8">
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-600">Pronto para transformar suas vendas?</h2>
+              <div className="flex flex-col md:flex-row gap-6 sm:gap-10 lg:gap-12 grow items-center justify-center">
+                <div className="flex-1 space-y-4 sm:space-y-6">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-600 leading-tight">Pronto para transformar suas vendas?</h2>
                   <p className="text-slate-400 text-base sm:text-lg md:text-xl leading-relaxed">
                     Entre em contato com a nossa equipe hoje mesmo e descubra como o Relaciona pode automatizar o seu negócio.
                   </p>
-                  <div className="pt-4">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Siga nossas redes</p>
-                    <div className="flex gap-4">
-                      <a href="#" className="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+                  <div className="pt-2">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Siga nossas redes</p>
+                    <div className="flex gap-3">
+                      <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 transition-colors">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
                       </a>
-                      <a href="#" className="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
+                      <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 transition-colors">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
                       </a>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex-1 w-full max-w-md">
-                  <form className="bg-blue-50 p-8 rounded-3xl border shadow-2xl flex flex-col gap-4">
+                  <form className="bg-white/50 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-white/20 shadow-xl flex flex-col gap-3">
                     <div>
-                      <label className="block text-sm font-medium text-blue-950 mb-1.5">Nome completo</label>
-                      <input type="text" placeholder="Ex: Maria Silva" className="w-full border rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                      <label className="block text-sm font-semibold text-blue-950 mb-1">Nome completo</label>
+                      <input type="text" placeholder="Ex: Maria Silva" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all bg-white" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-blue-950 mb-1.5">E-mail corporativo</label>
-                      <input type="email" placeholder="maria@empresa.com" className="w-full border rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                      <label className="block text-sm font-semibold text-blue-950 mb-1">E-mail corporativo</label>
+                      <input type="email" placeholder="maria@empresa.com" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all bg-white" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-blue-950 mb-1.5">Mensagem</label>
-                      <textarea rows={4} placeholder="Como podemos ajudar?" className="w-full border shadow-2xl rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none"></textarea>
+                      <label className="block text-sm font-semibold text-blue-950 mb-1">Mensagem</label>
+                      <textarea rows={3} placeholder="Como podemos ajudar?" className="w-full border border-gray-200 shadow-sm rounded-xl px-4 py-2.5 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none bg-white"></textarea>
                     </div>
-                    <button type="button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all mt-2">
+                    <button type="button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all mt-1">
                       Enviar mensagem
                     </button>
                   </form>
                 </div>
               </div>
 
-              <div className="w-full pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-blue-600 mt-12">
-                <div className="flex items-center gap-2 text-blue-600">
+              <div className="w-full pt-6 border-t border-slate-200/50 flex flex-col md:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-blue-600 mt-8">
+                <div className="flex items-center gap-2 font-semibold">
                   <img
                     src="https://ik.imagekit.io/JohnnieDiniz/logo_sem_fundo.svg?updatedAt=1787844777961"
                     alt="Logo Relaciona CRM"
-                    className="w-6 h-6 object-contain"
+                    className="w-5 h-5 object-contain"
                   />
                   Relaciona CRM
                 </div>
-                <p>© 2026 Relaciona CRM. Todos os direitos reservados.</p>
-                <div className="flex gap-4">
-                  <a href="#" className="hover:text-blue-400 transition-colors">Termos</a>
-                  <a href="#" className="hover:text-blue-400 transition-colors">Privacidade</a>
+                <p className="font-medium">© 2026 Relaciona CRM. Todos os direitos reservados.</p>
+                <div className="flex gap-4 font-medium">
+                  <a href="#" className="hover:text-blue-800 transition-colors">Termos</a>
+                  <a href="#" className="hover:text-blue-800 transition-colors">Privacidade</a>
                 </div>
               </div>
 
