@@ -393,9 +393,10 @@ export default function Home() {
           isOpen={isOportunidadesOpen} 
           onClose={() => setIsOportunidadesOpen(false)} 
         />
-
+        <MetricasSection/>
       </div>
       <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} />
     </div>
+    
   );
 }
