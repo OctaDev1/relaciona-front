@@ -94,10 +94,10 @@ export const MOCK_USUARIOS: Usuario[] = [
   },
   {
     id: 5,
-    nome: 'Giovanna Karolline',
-    email: 'giovanna.k@relaciona.com',
-    foto: 'https://ik.imagekit.io/JohnnieDiniz/integrantes/giovanna.jpg?updatedAt=1787845475179',
-    cargo: 'Gerente de Parcerias',
+    nome: 'Gabriel José Alegre',
+    email: 'gabriel.alegre@relaciona.com',
+    foto: 'https://ik.imagekit.io/JohnnieDiniz/integrantes/gabriel.png?updatedAt=1787845475225',
+    cargo: 'Product Designer & Comercial',
     status: 1,
     dataCadastro: '2025-01-20',
   },
@@ -166,7 +166,8 @@ export const MOCK_OPORTUNIDADES_INICIAIS: Oportunidade[] = [
   },
 ];
 
-const STORAGE_KEY = 'relaciona_oportunidades_v1';
+const STORAGE_KEY = 'relaciona_oportunidades_v2';
+export const OPORTUNIDADES_UPDATED_EVENT = 'relaciona:oportunidades-updated';
 
 export function getClientes(): Cliente[] {
   return MOCK_CLIENTES;
@@ -204,10 +205,14 @@ export function saveOportunidades(lista: Oportunidade[]): void {
     // Salvamos apenas os dados puros (sem a recursão do populate)
     const raw = lista.map(({ cliente, usuario, ...rest }) => rest);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent(OPORTUNIDADES_UPDATED_EVENT));
+    }
   } catch (error) {
     console.error('Erro ao salvar no localStorage:', error);
   }
 }
+
 
 export const STATUS_CORES: Record<StatusOportunidade, { bg: string; text: string; border: string; dot: string }> = {
   'Prospecção': {

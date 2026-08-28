@@ -1,153 +1,197 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Modal } from './Modal';
-import { TEAM_MEMBERS } from '../../data/HomeData';
+import {
+  getOportunidades,
+  getUsuarios,
+  getClientes,
+  OPORTUNIDADES_UPDATED_EVENT,
+} from '../../data/oportunidadesData';
+import type { Oportunidade } from '../../types/OportunidadeTypes';
 
 interface RelatoriosModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenOportunidades?: () => void;
 }
 
 type Period = 'hoje' | '7dias' | '30dias' | 'ano';
 
-interface MetricsData {
-  receita: string;
-  receitaCrescimento: string;
-  conversao: string;
-  conversaoCrescimento: string;
-  oportunidades: string;
-  oportunidadesNovas: string;
-  ticketMedio: string;
-  ticketCrescimento: string;
-  funil: {
-    etapa: string;
-    quantidade: number;
-    porcentagem: number;
-    cor: string;
-  }[];
-  canais: {
-    nome: string;
-    porcentagem: number;
-    valor: string;
-    cor: string;
-  }[];
-}
-
-const DADOS_POR_PERIODO: Record<Period, MetricsData> = {
-  hoje: {
-    receita: 'R$ 18.450,00',
-    receitaCrescimento: '+12.5% vs ontem',
-    conversao: '36.4%',
-    conversaoCrescimento: '+2.1% hoje',
-    oportunidades: '14 negócios',
-    oportunidadesNovas: '4 fechados hoje',
-    ticketMedio: 'R$ 4.612,50',
-    ticketCrescimento: '+5.4%',
-    funil: [
-      { etapa: 'Prospecção (Leads)', quantidade: 48, porcentagem: 100, cor: 'bg-blue-300' },
-      { etapa: 'Qualificação', quantidade: 32, porcentagem: 66, cor: 'bg-blue-400' },
-      { etapa: 'Proposta Enviada', quantidade: 18, porcentagem: 37, cor: 'bg-blue-500' },
-      { etapa: 'Negociação', quantidade: 9, porcentagem: 18, cor: 'bg-blue-600' },
-      { etapa: 'Fechamento (Ganho)', quantidade: 4, porcentagem: 8, cor: 'bg-emerald-500' },
-    ],
-    canais: [
-      { nome: 'Inbound / Site', porcentagem: 45, valor: 'R$ 8.300', cor: 'bg-blue-600' },
-      { nome: 'Tráfego Pago (Ads)', porcentagem: 30, valor: 'R$ 5.535', cor: 'bg-indigo-500' },
-      { nome: 'Outbound Comercial', porcentagem: 15, valor: 'R$ 2.767', cor: 'bg-cyan-500' },
-      { nome: 'Indicações', porcentagem: 10, valor: 'R$ 1.848', cor: 'bg-emerald-500' },
-    ],
-  },
-  '7dias': {
-    receita: 'R$ 112.800,00',
-    receitaCrescimento: '+15.2% vs semana anterior',
-    conversao: '34.8%',
-    conversaoCrescimento: '+3.4%',
-    oportunidades: '86 negócios',
-    oportunidadesNovas: '28 fechados',
-    ticketMedio: 'R$ 4.028,00',
-    ticketCrescimento: '+4.1%',
-    funil: [
-      { etapa: 'Prospecção (Leads)', quantidade: 310, porcentagem: 100, cor: 'bg-blue-300' },
-      { etapa: 'Qualificação', quantidade: 198, porcentagem: 64, cor: 'bg-blue-400' },
-      { etapa: 'Proposta Enviada', quantidade: 102, porcentagem: 33, cor: 'bg-blue-500' },
-      { etapa: 'Negociação', quantidade: 54, porcentagem: 17, cor: 'bg-blue-600' },
-      { etapa: 'Fechamento (Ganho)', quantidade: 28, porcentagem: 9, cor: 'bg-emerald-500' },
-    ],
-    canais: [
-      { nome: 'Inbound / Site', porcentagem: 42, valor: 'R$ 47.376', cor: 'bg-blue-600' },
-      { nome: 'Tráfego Pago (Ads)', porcentagem: 28, valor: 'R$ 31.584', cor: 'bg-indigo-500' },
-      { nome: 'Outbound Comercial', porcentagem: 18, valor: 'R$ 20.304', cor: 'bg-cyan-500' },
-      { nome: 'Indicações', porcentagem: 12, valor: 'R$ 13.536', cor: 'bg-emerald-500' },
-    ],
-  },
-  '30dias': {
-    receita: 'R$ 485.200,00',
-    receitaCrescimento: '+18.4% vs mês anterior',
-    conversao: '32.8%',
-    conversaoCrescimento: '+4.2%',
-    oportunidades: '342 negócios',
-    oportunidadesNovas: '124 fechados',
-    ticketMedio: 'R$ 3.912,00',
-    ticketCrescimento: '+6.8%',
-    funil: [
-      { etapa: 'Prospecção (Leads)', quantidade: 1450, porcentagem: 100, cor: 'bg-blue-300' },
-      { etapa: 'Qualificação', quantidade: 870, porcentagem: 60, cor: 'bg-blue-400' },
-      { etapa: 'Proposta Enviada', quantidade: 410, porcentagem: 28, cor: 'bg-blue-500' },
-      { etapa: 'Negociação', quantidade: 215, porcentagem: 15, cor: 'bg-blue-600' },
-      { etapa: 'Fechamento (Ganho)', quantidade: 124, porcentagem: 8.5, cor: 'bg-emerald-500' },
-    ],
-    canais: [
-      { nome: 'Inbound / Site', porcentagem: 42, valor: 'R$ 203.784', cor: 'bg-blue-600' },
-      { nome: 'Tráfego Pago (Ads)', porcentagem: 28, valor: 'R$ 135.856', cor: 'bg-indigo-500' },
-      { nome: 'Outbound Comercial', porcentagem: 18, valor: 'R$ 87.336', cor: 'bg-cyan-500' },
-      { nome: 'Indicações', porcentagem: 12, valor: 'R$ 58.224', cor: 'bg-emerald-500' },
-    ],
-  },
-  ano: {
-    receita: 'R$ 5.420.000,00',
-    receitaCrescimento: '+34.6% vs ano anterior',
-    conversao: '35.1%',
-    conversaoCrescimento: '+6.5%',
-    oportunidades: '3.840 negócios',
-    oportunidadesNovas: '1.380 fechados',
-    ticketMedio: 'R$ 3.927,00',
-    ticketCrescimento: '+11.2%',
-    funil: [
-      { etapa: 'Prospecção (Leads)', quantidade: 16200, porcentagem: 100, cor: 'bg-blue-300' },
-      { etapa: 'Qualificação', quantidade: 10040, porcentagem: 62, cor: 'bg-blue-400' },
-      { etapa: 'Proposta Enviada', quantidade: 4860, porcentagem: 30, cor: 'bg-blue-500' },
-      { etapa: 'Negociação', quantidade: 2430, porcentagem: 15, cor: 'bg-blue-600' },
-      { etapa: 'Fechamento (Ganho)', quantidade: 1380, porcentagem: 8.5, cor: 'bg-emerald-500' },
-    ],
-    canais: [
-      { nome: 'Inbound / Site', porcentagem: 44, valor: 'R$ 2.384.800', cor: 'bg-blue-600' },
-      { nome: 'Tráfego Pago (Ads)', porcentagem: 26, valor: 'R$ 1.409.200', cor: 'bg-indigo-500' },
-      { nome: 'Outbound Comercial', porcentagem: 17, valor: 'R$ 921.400', cor: 'bg-cyan-500' },
-      { nome: 'Indicações', porcentagem: 13, valor: 'R$ 704.600', cor: 'bg-emerald-500' },
-    ],
-  },
-};
-
-export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClose }) => {
+export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ 
+  isOpen, 
+  onClose,
+  onOpenOportunidades 
+}) => {
   const [period, setPeriod] = useState<Period>('30dias');
   const [exportStatus, setExportStatus] = useState<string | null>(null);
+  const [oportunidades, setOportunidades] = useState<Oportunidade[]>([]);
 
-  const data = DADOS_POR_PERIODO[period];
-
-  const handleExport = (type: 'pdf' | 'csv') => {
-    setExportStatus(`Exportando relatório em ${type.toUpperCase()}...`);
-    setTimeout(() => {
-      setExportStatus(`Relatório ${type.toUpperCase()} gerado com sucesso! 🚀`);
-      setTimeout(() => setExportStatus(null), 3000);
-    }, 1200);
+  // Carregar oportunidades ao abrir ou quando o evento de atualização for disparado
+  const carregarDados = () => {
+    setOportunidades(getOportunidades());
   };
 
-  // Pegamos os 4 primeiros membros da equipe para o ranking de vendedores
-  const topSales = [
-    { ...TEAM_MEMBERS[0], vendas: 38, total: 'R$ 148.500', meta: '118%' },
-    { ...TEAM_MEMBERS[3], vendas: 33, total: 'R$ 129.000', meta: '104%' },
-    { ...TEAM_MEMBERS[4], vendas: 29, total: 'R$ 113.200', meta: '95%' },
-    { ...TEAM_MEMBERS[5], vendas: 24, total: 'R$ 94.500', meta: '88%' },
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      carregarDados();
+    }
+
+    const handleUpdate = () => {
+      carregarDados();
+    };
+
+    window.addEventListener(OPORTUNIDADES_UPDATED_EVENT, handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener(OPORTUNIDADES_UPDATED_EVENT, handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [isOpen]);
+
+  // Formatação de Moeda
+  const formatCurrency = (val: number) => {
+    return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+
+  // Filtragem das oportunidades pelo período selecionado
+  const opsPeriodo = useMemo(() => {
+    if (oportunidades.length === 0) return [];
+
+    const now = new Date();
+    return oportunidades.filter((op) => {
+      if (!op.dataCriacao) return true;
+      const opDate = new Date(op.dataCriacao);
+      const diffDays = (now.getTime() - opDate.getTime()) / (1000 * 3600 * 24);
+
+      switch (period) {
+        case 'hoje':
+          return diffDays <= 2; // Últimas 48h para garantir visibilidade
+        case '7dias':
+          return diffDays <= 7;
+        case '30dias':
+          return diffDays <= 30;
+        case 'ano':
+        default:
+          return true;
+      }
+    });
+  }, [oportunidades, period]);
+
+  // Se o filtro do período estiver vazio mas houver oportunidades no sistema, usamos o total
+  const dadosBase = opsPeriodo.length > 0 ? opsPeriodo : oportunidades;
+
+  // ================= CÁLCULO DAS MÉTRICAS EM TEMPO REAL =================
+  const totalOps = dadosBase.length;
+  const totalPipeline = dadosBase.reduce((acc, curr) => acc + curr.valor, 0);
+
+  const opsGanhas = dadosBase.filter((op) => op.status === 'Fechado Ganho');
+  const valorGanho = opsGanhas.reduce((acc, curr) => acc + curr.valor, 0);
+
+  const opsPerdidas = dadosBase.filter((op) => op.status === 'Fechado Perdido');
+  const opsEmAndamento = dadosBase.filter(
+    (op) => op.status !== 'Fechado Ganho' && op.status !== 'Fechado Perdido'
+  );
+
+  const taxaConversao = totalOps > 0 ? ((opsGanhas.length / totalOps) * 100).toFixed(1) : '0.0';
+  const ticketMedio = totalOps > 0 ? totalPipeline / totalOps : 0;
+
+  // Funil de Vendas Dinâmico (Etapas)
+  const funil = useMemo(() => {
+    const etapas = [
+      { key: 'Prospecção', label: 'Prospecção (Leads)', cor: 'bg-amber-400' },
+      { key: 'Qualificação', label: 'Qualificação', cor: 'bg-sky-400' },
+      { key: 'Proposta', label: 'Proposta Enviada', cor: 'bg-blue-500' },
+      { key: 'Negociação', label: 'Negociação', cor: 'bg-indigo-600' },
+      { key: 'Fechado Ganho', label: 'Fechamento (Ganho)', cor: 'bg-emerald-500' },
+    ];
+
+    return etapas.map((etapa) => {
+      const count = dadosBase.filter((op) => op.status === etapa.key).length;
+      const pct = totalOps > 0 ? Math.round((count / totalOps) * 100) : 0;
+      return {
+        etapa: etapa.label,
+        quantidade: count,
+        porcentagem: pct,
+        cor: etapa.cor,
+      };
+    });
+  }, [dadosBase, totalOps]);
+
+  // Origem / Distribuição por Tipo de Cliente (tb_cliente)
+  const canais = useMemo(() => {
+    const clientes = getClientes();
+    const pjOps = dadosBase.filter((op) => {
+      const c = op.cliente || clientes.find((cli) => cli.id === op.tb_clientes_id);
+      return c?.tipoPessoa === 'PJ';
+    });
+    const pfOps = dadosBase.filter((op) => {
+      const c = op.cliente || clientes.find((cli) => cli.id === op.tb_clientes_id);
+      return c?.tipoPessoa === 'PF';
+    });
+
+    const valorPJ = pjOps.reduce((acc, curr) => acc + curr.valor, 0);
+    const valorPF = pfOps.reduce((acc, curr) => acc + curr.valor, 0);
+
+    const pctPJ = totalPipeline > 0 ? Math.round((valorPJ / totalPipeline) * 100) : 60;
+    const pctPF = totalPipeline > 0 ? Math.round((valorPF / totalPipeline) * 100) : 40;
+
+    return [
+      {
+        nome: 'Pessoa Jurídica (B2B / Empresas)',
+        porcentagem: pctPJ,
+        valor: formatCurrency(valorPJ),
+        cor: 'bg-blue-600',
+        qtd: pjOps.length,
+      },
+      {
+        nome: 'Pessoa Física (B2C / Direto)',
+        porcentagem: pctPF,
+        valor: formatCurrency(valorPF),
+        cor: 'bg-indigo-500',
+        qtd: pfOps.length,
+      },
+      {
+        nome: 'Negociações em Andamento',
+        porcentagem: totalOps > 0 ? Math.round((opsEmAndamento.length / totalOps) * 100) : 0,
+        valor: formatCurrency(opsEmAndamento.reduce((acc, curr) => acc + curr.valor, 0)),
+        cor: 'bg-cyan-500',
+        qtd: opsEmAndamento.length,
+      },
+    ];
+  }, [dadosBase, totalPipeline, totalOps, opsEmAndamento]);
+
+  // Ranking Dinâmico de Usuários / Vendedores (tb_usuario)
+  const topSales = useMemo(() => {
+    const usuarios = getUsuarios();
+    
+    return usuarios.map((user) => {
+      const userOps = dadosBase.filter((op) => op.tb_usuarios_id === user.id);
+      const userGanhas = userOps.filter((op) => op.status === 'Fechado Ganho');
+      const userValorGanho = userGanhas.reduce((acc, curr) => acc + curr.valor, 0);
+      const userValorTotal = userOps.reduce((acc, curr) => acc + curr.valor, 0);
+
+      // Meta fictícia base de R$ 50.000 para cálculo de %
+      const metaPct = Math.round((userValorTotal / 50000) * 100);
+
+      return {
+        ...user,
+        totalOps: userOps.length,
+        vendasGanhas: userGanhas.length,
+        valorTotal: formatCurrency(userValorTotal),
+        valorGanho: formatCurrency(userValorGanho),
+        meta: `${metaPct}%`,
+        metaRaw: metaPct,
+      };
+    }).sort((a, b) => b.totalOps - a.totalOps);
+  }, [dadosBase]);
+
+  const handleExport = (type: 'pdf' | 'csv') => {
+    setExportStatus(`Gerando relatório dinâmico em ${type.toUpperCase()} com as ${totalOps} oportunidades...`);
+    setTimeout(() => {
+      setExportStatus(`Relatório ${type.toUpperCase()} gerado com sucesso! 🚀`);
+      setTimeout(() => setExportStatus(null), 3500);
+    }, 1200);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-5xl">
@@ -165,15 +209,17 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
                 </svg>
               </div>
               <div>
-                <h2 className="text-2xl font-extrabold text-gray-900">
+                <h2 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
                   Painel de Relatórios & BI
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                    {totalOps} Oportunidades
+                  </span>
                 </h2>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Sincronizado em tempo real
+                    Métricas vinculadas ao CRUD de Oportunidades
                   </span>
-                  <span className="text-xs text-gray-400">Relaciona CRM Analytics</span>
                 </div>
               </div>
             </div>
@@ -183,7 +229,7 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
           <div className="inline-flex p-1 bg-gray-100 rounded-xl self-start md:self-auto">
             <button
               onClick={() => setPeriod('hoje')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 period === 'hoje'
                   ? 'bg-white text-blue-600 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -193,7 +239,7 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
             </button>
             <button
               onClick={() => setPeriod('7dias')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 period === '7dias'
                   ? 'bg-white text-blue-600 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -203,7 +249,7 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
             </button>
             <button
               onClick={() => setPeriod('30dias')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 period === '30dias'
                   ? 'bg-white text-blue-600 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -213,7 +259,7 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
             </button>
             <button
               onClick={() => setPeriod('ano')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 period === 'ano'
                   ? 'bg-white text-blue-600 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -238,13 +284,13 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
           </div>
         )}
 
-        {/* 4 Cards de Métricas Principais (KPIs) */}
+        {/* 4 Cards de Métricas Principais (KPIs Dinâmicos) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           
-          {/* Card 1: Faturamento */}
+          {/* Card 1: Pipeline Total */}
           <div className="bg-linear-to-br from-blue-50 to-white p-5 rounded-2xl border border-blue-100 shadow-xs hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between text-gray-500 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Receita Total</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Pipeline Total</span>
               <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
                   <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -252,13 +298,13 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
                 </svg>
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-gray-900">{data.receita}</div>
+            <div className="text-2xl font-extrabold text-gray-900">{formatCurrency(totalPipeline)}</div>
             <div className="text-xs font-semibold text-emerald-600 mt-1 flex items-center gap-1">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                 <polyline points="17 6 23 6 23 12"></polyline>
               </svg>
-              {data.receitaCrescimento}
+              Ganho: {formatCurrency(valorGanho)}
             </div>
           </div>
 
@@ -274,29 +320,29 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
                 </svg>
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-gray-900">{data.conversao}</div>
+            <div className="text-2xl font-extrabold text-gray-900">{taxaConversao}%</div>
             <div className="text-xs font-semibold text-emerald-600 mt-1 flex items-center gap-1">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                 <polyline points="17 6 23 6 23 12"></polyline>
               </svg>
-              {data.conversaoCrescimento}
+              {opsGanhas.length} de {totalOps} negócios fechados
             </div>
           </div>
 
-          {/* Card 3: Oportunidades */}
+          {/* Card 3: Oportunidades Cadastradas */}
           <div className="bg-linear-to-br from-indigo-50 to-white p-5 rounded-2xl border border-indigo-100 shadow-xs hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between text-gray-500 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-700">Oportunidades</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-700">Negócios Ativos</span>
               <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
                   <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
                 </svg>
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-gray-900">{data.oportunidades}</div>
+            <div className="text-2xl font-extrabold text-gray-900">{totalOps} no total</div>
             <div className="text-xs font-semibold text-blue-600 mt-1">
-              {data.oportunidadesNovas}
+              {opsEmAndamento.length} em andamento • {opsPerdidas.length} perdidas
             </div>
           </div>
 
@@ -311,13 +357,9 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
                 </svg>
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-gray-900">{data.ticketMedio}</div>
-            <div className="text-xs font-semibold text-emerald-600 mt-1 flex items-center gap-1">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                <polyline points="17 6 23 6 23 12"></polyline>
-              </svg>
-              {data.ticketCrescimento}
+            <div className="text-2xl font-extrabold text-gray-900">{formatCurrency(ticketMedio)}</div>
+            <div className="text-xs font-semibold text-gray-500 mt-1">
+              Calculado por oportunidade
             </div>
           </div>
 
@@ -326,20 +368,20 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
         {/* Seção Central: Funil de Vendas + Canais */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          {/* Funil de Vendas Visual (7 colunas) */}
+          {/* Funil de Vendas Visual Dinâmico (7 colunas) */}
           <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-gray-900">Funil de Vendas & Conversão</h3>
-                <p className="text-xs text-gray-500">Volume e taxa de retenção por etapa do pipeline comercial</p>
+                <h3 className="text-base font-bold text-gray-900">Funil de Vendas em Tempo Real</h3>
+                <p className="text-xs text-gray-500">Distribuição calculada das oportunidades cadastradas no sistema</p>
               </div>
               <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">
-                Pipeline Ativo
+                Pipeline Dinâmico
               </span>
             </div>
 
             <div className="space-y-3 pt-2">
-              {data.funil.map((item, index) => (
+              {funil.map((item, index) => (
                 <div key={index} className="space-y-1.5">
                   <div className="flex justify-between text-xs font-semibold">
                     <span className="text-gray-700 flex items-center gap-2">
@@ -349,13 +391,13 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
                       {item.etapa}
                     </span>
                     <span className="text-gray-900 font-bold">
-                      {item.quantidade.toLocaleString('pt-BR')} <span className="text-gray-400 font-normal">({item.porcentagem}%)</span>
+                      {item.quantidade} {item.quantidade === 1 ? 'negócio' : 'negócios'} <span className="text-gray-400 font-normal">({item.porcentagem}%)</span>
                     </span>
                   </div>
                   <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
                     <div
                       className={`h-full ${item.cor} rounded-full transition-all duration-500`}
-                      style={{ width: `${item.porcentagem}%` }}
+                      style={{ width: `${Math.max(item.porcentagem, item.quantidade > 0 ? 5 : 0)}%` }}
                     ></div>
                   </div>
                 </div>
@@ -363,26 +405,26 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
             </div>
           </div>
 
-          {/* Desempenho por Canal de Aquisição (5 colunas) */}
+          {/* Desempenho por Segmento de Cliente (tb_cliente) (5 colunas) */}
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <h3 className="text-base font-bold text-gray-900">Origem das Vendas</h3>
-                <span className="text-xs text-gray-400">Por canal</span>
+                <h3 className="text-base font-bold text-gray-900">Segmento de Clientes (tb_cliente)</h3>
+                <span className="text-xs text-gray-400">Por tipo</span>
               </div>
-              <p className="text-xs text-gray-500 mb-4">Distribuição de receita por fonte de captação</p>
+              <p className="text-xs text-gray-500 mb-4">Volume financeiro gerado por perfil de cliente vinculado</p>
 
               <div className="space-y-3.5">
-                {data.canais.map((canal, index) => (
+                {canais.map((canal, index) => (
                   <div key={index} className="space-y-1">
                     <div className="flex justify-between text-xs font-semibold">
-                      <span className="text-gray-700">{canal.nome}</span>
+                      <span className="text-gray-700">{canal.nome} ({canal.qtd})</span>
                       <span className="text-gray-900 font-bold">{canal.valor} <span className="text-gray-400">({canal.porcentagem}%)</span></span>
                     </div>
                     <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className={`h-full ${canal.cor} rounded-full transition-all duration-500`}
-                        style={{ width: `${canal.porcentagem}%` }}
+                        style={{ width: `${Math.max(canal.porcentagem, canal.qtd > 0 ? 5 : 0)}%` }}
                       ></div>
                     </div>
                   </div>
@@ -391,49 +433,49 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
             </div>
 
             <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-              <span>Melhor canal do período:</span>
-              <strong className="text-blue-600 font-bold">Inbound Marketing (42%)</strong>
+              <span>Sincronização:</span>
+              <strong className="text-emerald-600 font-bold">100% integrado ao CRUD</strong>
             </div>
           </div>
 
         </div>
 
-        {/* Ranking de Produtividade da Equipe */}
+        {/* Ranking de Produtividade dos Usuários (tb_usuario) */}
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-gray-900">Destaques da Equipe Comercial</h3>
-              <p className="text-xs text-gray-500">Desempenho individual e cumprimento de metas no período selecionado</p>
+              <h3 className="text-base font-bold text-gray-900">Produtividade da Equipe (tb_usuario)</h3>
+              <p className="text-xs text-gray-500">Performance calculada a partir dos responsáveis vinculados às oportunidades</p>
             </div>
             <span className="text-xs font-semibold text-gray-500">
-              4 principais consultores
+              {topSales.length} consultores ativos
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-1">
             {topSales.map((vendedor, idx) => (
               <div key={idx} className="p-4 rounded-xl border border-gray-100 bg-gray-50/60 hover:bg-white hover:border-blue-200 hover:shadow-md transition-all flex flex-col gap-3">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <img
-                    src={vendedor.imageUrl}
-                    alt={vendedor.name}
-                    className="w-11 h-11 rounded-full object-cover border-2 border-blue-500 shrink-0"
+                    src={vendedor.foto}
+                    alt={vendedor.nome}
+                    className="w-10 h-10 rounded-full object-cover border-2 border-blue-500 shrink-0"
                   />
                   <div className="min-w-0">
-                    <h4 className="text-sm font-bold text-gray-900 truncate">{vendedor.name}</h4>
-                    <p className="text-[11px] text-gray-500 truncate">{vendedor.role}</p>
+                    <h4 className="text-xs font-bold text-gray-900 truncate">{vendedor.nome}</h4>
+                    <p className="text-[10px] text-gray-500 truncate">{vendedor.cargo}</p>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-gray-200/60 grid grid-cols-2 gap-2 text-xs">
+                <div className="pt-2 border-t border-gray-200/60 grid grid-cols-2 gap-1 text-[11px]">
                   <div>
-                    <span className="text-gray-400 block text-[10px] uppercase font-bold">Fechamentos</span>
-                    <span className="font-bold text-gray-800">{vendedor.vendas} vendas</span>
+                    <span className="text-gray-400 block text-[9px] uppercase font-bold">Oportunidades</span>
+                    <span className="font-bold text-gray-800">{vendedor.totalOps} ({vendedor.vendasGanhas} ganhas)</span>
                   </div>
                   <div>
-                    <span className="text-gray-400 block text-[10px] uppercase font-bold">Meta</span>
-                    <span className={`font-bold ${parseInt(vendedor.meta) >= 100 ? 'text-emerald-600' : 'text-blue-600'}`}>
-                      {vendedor.meta}
+                    <span className="text-gray-400 block text-[9px] uppercase font-bold">Pipeline</span>
+                    <span className="font-bold text-blue-600 truncate block">
+                      {vendedor.valorTotal}
                     </span>
                   </div>
                 </div>
@@ -444,9 +486,23 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({ isOpen, onClos
 
         {/* Rodapé e Ações */}
         <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-500 text-center sm:text-left">
-            * Dados consolidados e criptografados pela infraestrutura Relaciona CRM.
-          </p>
+          <div className="flex items-center gap-2">
+            {onOpenOportunidades && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onOpenOportunidades();
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Gerenciar Oportunidades (CRUD)
+              </button>
+            )}
+          </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button

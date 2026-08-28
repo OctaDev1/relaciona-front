@@ -337,8 +337,15 @@ export default function Home() {
         </div>
 
         {/* Modais renderizados dentro do container fixo principal */}
-        <RelatoriosModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-        <OportunidadesModal isOpen={isOportunidadesOpen} onClose={() => setIsOportunidadesOpen(false)} />
+        <RelatoriosModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+          onOpenOportunidades={() => setIsOportunidadesOpen(true)}
+        />
+        <OportunidadesModal 
+          isOpen={isOportunidadesOpen} 
+          onClose={() => setIsOportunidadesOpen(false)} 
+        />
 
       </div>
     </div>
