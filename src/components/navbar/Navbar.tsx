@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
 
@@ -48,7 +49,7 @@ function Navbar() {
           <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
           <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Introdução</a>
           <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Sobre</a>
-          <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Dashboard</a>
+          <Link to="/dashboard"><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Dashboard</a></Link>
         </nav>
 
         {/* Direita: Ícone de Perfil */}

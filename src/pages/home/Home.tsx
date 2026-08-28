@@ -3,9 +3,12 @@ import { FeatureCard } from '../../components/featurecards/Featurecards';
 import { TeamCard } from '../../components/teamcard/TeamCard';
 import { TestimonialCard } from '../../components/testimonialcard/TestimonialCard';
 import { MENU_ITEMS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
+import { RelatoriosModal } from '../../components/modal/RelatoriosModal';
+
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const featureCarouselRef = useRef<HTMLDivElement>(null);
   const testimonialCarouselRef = useRef<HTMLDivElement>(null);
@@ -106,7 +109,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
-                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-blue-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                <div className="w-full max-w-lg aspect-video rounded-3xl bg-linear-to-br from-blue-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8">
                   <img
                     src="https://ik.imagekit.io/JohnnieDiniz/logo-relaciona.png?updatedAt=1787844593939"
                     alt="Logo Relaciona CRM"
@@ -131,7 +134,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
-                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                <div className="w-full max-w-lg aspect-video rounded-3xl bg-linear-to-brrom-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8">
                   <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('oportunidades')}
                   </div>
@@ -147,14 +150,17 @@ export default function Home() {
                 <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Dados Precisos</h1>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Tome decisões baseadas em relatórios gerados em tempo real.</h2>
                 <div className="pt-4">
-                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                  <button 
+                    onClick={() => setIsModalOpen(true)} 
+                    className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group cursor-pointer"
+                  >
                     Ver relatórios
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
-                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-indigo-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                <div className="w-full max-w-lg aspect-video rounded-3xl bg-linear-to-br from-indigo-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8">
                   <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('metricas')}
                   </div>
@@ -177,7 +183,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
-                <div className={`w-full max-w-lg aspect-4/3 rounded-4xl bg-linear-to-br from-sky-100 to-white shadow-2xl border border-gray-100 flex items-center justify-center p-8`}>
+                <div className="w-full max-w-lg aspect-video rounded-3xl bg-linear-to-br from-sky-100 to-white shadow-2xl border border-gray-100 flex items-center justify-center p-8">
                   <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('equipe')}
                   </div>
@@ -272,7 +278,7 @@ export default function Home() {
                   <div className="pt-4">
                     <p className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Siga nossas redes</p>
                     <div className="flex gap-4">
-                      <a href="#" className="w-12 h-12 rounded-full  flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
+                      <a href="#" className="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
                         <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
                       </a>
                       <a href="#" className="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
@@ -286,7 +292,7 @@ export default function Home() {
                   <form className="bg-blue-50 p-8 rounded-3xl border shadow-2xl flex flex-col gap-4">
                     <div>
                       <label className="block text-sm font-medium text-blue-950 mb-1.5">Nome completo</label>
-                      <input type="text" placeholder="Ex: Maria Silva" className="w-full  border  rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                      <input type="text" placeholder="Ex: Maria Silva" className="w-full border rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-blue-950 mb-1.5">E-mail corporativo</label>
@@ -294,7 +300,7 @@ export default function Home() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-blue-950 mb-1.5">Mensagem</label>
-                      <textarea rows={4} placeholder="Como podemos ajudar?" className="w-full border shadow-2xl2x1 rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none"></textarea>
+                      <textarea rows={4} placeholder="Como podemos ajudar?" className="w-full border shadow-2xl rounded-xl px-4 py-3 text-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none"></textarea>
                     </div>
                     <button type="button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all mt-2">
                       Enviar mensagem
@@ -304,7 +310,7 @@ export default function Home() {
               </div>
 
               <div className="w-full pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-blue-600 mt-12">
-                <div className="flex items-center gap-2  text-blue-600">
+                <div className="flex items-center gap-2 text-blue-600">
                   <img
                     src="https://ik.imagekit.io/JohnnieDiniz/logo_sem_fundo.svg?updatedAt=1787844777961"
                     alt="Logo Relaciona CRM"
@@ -323,6 +329,10 @@ export default function Home() {
           </div>
 
         </div>
+
+        {/* Modal renderizado dentro do container fixo principal */}
+        <RelatoriosModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
       </div>
     </div>
   );
