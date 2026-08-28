@@ -6,6 +6,7 @@ import { AboutModal } from '../../components/modal/AboutModal';
 import { MENU_ITEMS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
 import { RelatoriosModal } from '../../components/modal/RelatoriosModal';
 import { OportunidadesModal } from '../../components/modal/OportunidadesModal';
+import { MetricasSection } from '../../components/modal/MetricasSection';
 
 
 export default function Home() {
@@ -394,7 +395,6 @@ export default function Home() {
         />
 
       </div>
-      <OportunidadesModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} />
     </div>
   );
