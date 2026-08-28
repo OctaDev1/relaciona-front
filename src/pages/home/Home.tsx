@@ -2,10 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FeatureCard } from '../../components/featurecards/Featurecards';
 import { TeamCard } from '../../components/teamcard/TeamCard';
 import { TestimonialCard } from '../../components/testimonialcard/TestimonialCard';
+import { AboutModal } from '../../components/modal/AboutModal';
 import { MENU_ITEMS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   const featureCarouselRef = useRef<HTMLDivElement>(null);
   const testimonialCarouselRef = useRef<HTMLDivElement>(null);
@@ -99,10 +101,14 @@ export default function Home() {
                 <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Relaciona</h1>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Controle total da sua operação comercial.</h2>
                 <div className="pt-4">
-                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                  <button
+                    type="button"
+                    onClick={() => setIsAboutModalOpen(true)}
+                    className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group"
+                  >
                     Conheça o sistema
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
@@ -324,6 +330,8 @@ export default function Home() {
 
         </div>
       </div>
+
+      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} />
     </div>
   );
 }
