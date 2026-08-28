@@ -211,14 +211,11 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({
               <div>
                 <h2 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
                   Painel de Relatórios & BI
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                    {totalOps} Oportunidades
-                  </span>
                 </h2>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Métricas vinculadas ao CRUD de Oportunidades
+                    Métricas vinculadas Dashboard
                   </span>
                 </div>
               </div>
@@ -499,7 +496,7 @@ export const RelatoriosModal: React.FC<RelatoriosModalProps> = ({
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                 </svg>
-                Gerenciar Oportunidades (CRUD)
+                Gerenciar Oportunidades
               </button>
             )}
           </div>

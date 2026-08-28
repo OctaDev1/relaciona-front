@@ -208,13 +208,7 @@ export const OportunidadesModal: React.FC<OportunidadesModalProps> = ({ isOpen, 
               <div>
                 <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
                   Gestão de Oportunidades
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                    CRUD Relacional
-                  </span>
                 </h2>
-                <p className="text-xs text-gray-500">
-                  Relacionamento entre <code className="font-semibold text-blue-600 bg-blue-50 px-1 py-0.5 rounded">tb_oportunidade</code>, <code className="font-semibold text-gray-700 bg-gray-100 px-1 py-0.5 rounded">tb_cliente</code> e <code className="font-semibold text-gray-700 bg-gray-100 px-1 py-0.5 rounded">tb_usuario</code>
-                </p>
               </div>
             </div>
           </div>
