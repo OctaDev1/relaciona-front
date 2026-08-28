@@ -12,6 +12,7 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOportunidadesOpen, setIsOportunidadesOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
 
   const featureCarouselRef = useRef<HTMLDivElement>(null);
@@ -354,7 +355,7 @@ export default function Home() {
         />
 
       </div>
-
+      <OportunidadesModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} />
     </div>
   );

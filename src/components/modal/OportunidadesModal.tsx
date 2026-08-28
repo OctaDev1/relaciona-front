@@ -364,7 +364,7 @@ export const OportunidadesModal: React.FC<OportunidadesModalProps> = ({ isOpen, 
               return (
                 <div
                   key={etapa}
-                  className="bg-gray-50/70 rounded-2xl p-3 border border-gray-200/70 flex flex-col min-w-[200px]"
+                  className="bg-gray-50/70 rounded-2xl p-3 border border-gray-200/70 flex flex-col min-w-50"
                 >
                   {/* Cabeçalho da Coluna Kanban */}
                   <div className="flex items-center justify-between mb-2">
