@@ -248,10 +248,6 @@ export default function Home() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-2 sm:mb-3">Tudo o que seu time precisa</h2>
                   <p className="text-gray-600 text-base sm:text-lg md:text-xl">Deslize para ver as funcionalidades desenvolvidas para o seu comercial.</p>
                 </div>
-                <div className="flex gap-3">
-                  <button onClick={() => scroll(featureCarouselRef, 'left')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 transition-all shadow-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                  <button onClick={() => scroll(featureCarouselRef, 'right')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 transition-all shadow-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-                </div>
               </div>
               <div ref={featureCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
                 {[
@@ -264,6 +260,10 @@ export default function Home() {
                     <FeatureCard title={feat.title} description={feat.description} icon={feat.icon} />
                   </div>
                 ))}
+              </div>
+              <div className="flex justify-center gap-3 mt-2">
+                <button onClick={() => scroll(featureCarouselRef, 'left')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <button onClick={() => scroll(featureCarouselRef, 'right')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
               </div>
             </div>
           </div>
@@ -282,6 +282,10 @@ export default function Home() {
                   <TeamCard key={index} {...member} />
                 ))}
               </div>
+              <div className="flex justify-center gap-3 mt-2">
+                <button onClick={() => scroll(teamCarouselRef, 'left')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <button onClick={() => scroll(teamCarouselRef, 'right')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+              </div>
             </div>
           </div>
 
@@ -294,10 +298,6 @@ export default function Home() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3">Quem usa, recomenda</h2>
                   <p className="text-slate-400 text-base sm:text-lg md:text-xl">Veja como o Relaciona tem transformado o processo comercial de outras empresas.</p>
                 </div>
-                <div className="flex gap-3">
-                  <button onClick={() => scroll(testimonialCarouselRef, 'left')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                  <button onClick={() => scroll(testimonialCarouselRef, 'right')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-                </div>
               </div>
               <div ref={testimonialCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none bg-blue-50">
                 {[
@@ -309,6 +309,10 @@ export default function Home() {
                     <TestimonialCard {...test} />
                   </div>
                 ))}
+              </div>
+              <div className="flex justify-center gap-3 mt-2">
+                <button onClick={() => scroll(testimonialCarouselRef, 'left')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <button onClick={() => scroll(testimonialCarouselRef, 'right')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
               </div>
             </div>
           </div>
