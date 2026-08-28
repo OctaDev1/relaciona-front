@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FeatureCard } from '../../components/featurecards/Featurecards';
 import { TeamCard } from '../../components/teamcard/TeamCard';
 import { TestimonialCard } from '../../components/testimonialcard/TestimonialCard';
+import { AboutModal } from '../../components/modal/AboutModal';
 import { MENU_ITEMS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
 import { RelatoriosModal } from '../../components/modal/RelatoriosModal';
 import { OportunidadesModal } from '../../components/modal/OportunidadesModal';
@@ -74,13 +75,14 @@ export default function Home() {
 
       <div className="fixed top-0 left-0 w-full h-screen overflow-hidden z-10 bg-gray-50/30">
 
-        <div className="absolute top-8 left-0 w-full z-40 flex justify-center px-4">
-          <div className="inline-flex items-center p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full scroll-smooth [&::-webkit-scrollbar]:hidden">
+        {/* Mobile (iPhone SE 375px): menu compacto com fonte reduzida; md (iPad Mini 768px): espaçamento maior */}
+        <div className="absolute top-4 sm:top-8 left-0 w-full z-40 flex justify-center px-2 sm:px-4">
+          <div className="inline-flex items-center p-1 sm:p-1.5 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-sm overflow-x-auto max-w-full scroll-smooth [&::-webkit-scrollbar]:hidden">
             {MENU_ITEMS.map((item) => (
               <button
                 key={item.index}
                 onClick={() => scrollToSlide(item.index)}
-                className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full font-bold text-sm transition-all duration-300 whitespace-nowrap ${currentSlideIndex === item.index ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
+                className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap ${currentSlideIndex === item.index ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
                   }`}
               >
                 {item.label}
@@ -99,16 +101,20 @@ export default function Home() {
         >
 
           {/* ==================== SLIDE 1: RELACIONA ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
-              <div className="flex-1 space-y-6 text-center md:text-left">
-                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Relaciona</h1>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Controle total da sua operação comercial.</h2>
+          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Relaciona</h1>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Controle total da sua operação comercial.</h2>
                 <div className="pt-4">
-                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                  <button
+                    type="button"
+                    onClick={() => setIsAboutModalOpen(true)}
+                    className="inline-flex items-center text-blue-600 font-bold text-base sm:text-lg hover:text-blue-800 transition-colors group"
+                  >
                     Conheça o sistema
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
@@ -124,11 +130,11 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 2: OPORTUNIDADES ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
-              <div className="flex-1 space-y-6 text-center md:text-left">
-                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Gestão de Vendas</h1>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Acompanhe cada etapa do seu funil e feche mais negócios.</h2>
+          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Gestão de Vendas</h1>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Acompanhe cada etapa do seu funil e feche mais negócios.</h2>
                 <div className="pt-4">
                   <button 
                     onClick={() => setIsOportunidadesOpen(true)}
@@ -150,11 +156,11 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 3: MÉTRICAS E BI ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
-              <div className="flex-1 space-y-6 text-center md:text-left">
-                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Dados Precisos</h1>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Tome decisões baseadas em relatórios gerados em tempo real.</h2>
+          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Dados Precisos</h1>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Tome decisões baseadas em relatórios gerados em tempo real.</h2>
                 <div className="pt-4">
                   <button 
                     onClick={() => setIsModalOpen(true)} 
@@ -176,13 +182,13 @@ export default function Home() {
           </div>
 
           {/* ==================== SLIDE 4: GESTÃO DE EQUIPE ==================== */}
-          <div className="w-screen h-full flex items-center justify-center px-6 md:px-16 bg-blue-50 shrink-0">
-            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 pt-16">
-              <div className="flex-1 space-y-6 text-center md:text-left">
-                <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Trabalho Colaborativo</h1>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Organize permissões, delegue tarefas e unifique seu time.</h2>
+          <div className="w-screen h-full flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 bg-blue-50 shrink-0">
+            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-24 pt-16">
+              <div className="flex-1 space-y-4 sm:space-y-6 text-center md:text-left">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600 tracking-tight">Trabalho Colaborativo</h1>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Organize permissões, delegue tarefas e unifique seu time.</h2>
                 <div className="pt-4">
-                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
+                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-base sm:text-lg hover:text-blue-800 transition-colors group">
                     Gerenciar time
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
                   </a>
@@ -200,11 +206,11 @@ export default function Home() {
 
           {/* ==================== SLIDE 5: Funcionalidades ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 border-l border-gray-100 shrink-0">
-            <div className="w-full px-6 md:px-16 max-w-7xl mx-auto pt-16">
-              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-8 sm:mb-12 gap-4 sm:gap-6">
                 <div>
-                  <h2 className="text-4xl font-bold text-blue-600 mb-3">Tudo o que seu time precisa</h2>
-                  <p className="text-gray-600 text-xl">Deslize para ver as funcionalidades desenvolvidas para o seu comercial.</p>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-2 sm:mb-3">Tudo o que seu time precisa</h2>
+                  <p className="text-gray-600 text-base sm:text-lg md:text-xl">Deslize para ver as funcionalidades desenvolvidas para o seu comercial.</p>
                 </div>
                 <div className="flex gap-3">
                   <button onClick={() => scroll(featureCarouselRef, 'left')} className="p-3 bg-white border border-gray-200 rounded-full text-gray-600 hover:text-blue-500 hover:border-blue-300 transition-all shadow-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
@@ -228,11 +234,11 @@ export default function Home() {
 
           {/* ==================== SLIDE 6: Equipe ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 border-l border-gray-100 shrink-0">
-            <div className="w-full px-6 md:px-16 max-w-7xl mx-auto pt-16">
-              <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-6 sm:mb-10 gap-4 sm:gap-6">
                 <div>
-                  <h2 className="text-4xl font-bold text-blue-600 mb-2">Quem constrói o Relaciona</h2>
-                  <p className="text-gray-600 text-lg">Conheça as mentes por trás do desenvolvimento do nosso CRM.</p>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-2">Quem constrói o Relaciona</h2>
+                  <p className="text-gray-600 text-base sm:text-lg">Conheça as mentes por trás do desenvolvimento do nosso CRM.</p>
                 </div>
               </div>
               <div ref={teamCarouselRef} className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
@@ -246,11 +252,11 @@ export default function Home() {
           {/* ==================== SLIDE 7: Depoimentos ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 text-blue-600 relative shrink-0 overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full blur-[120px] pointer-events-none"></div>
-            <div className="w-full px-6 md:px-16 max-w-7xl mx-auto relative z-10 pt-16">
-              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-7xl mx-auto relative z-10 pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-8 sm:mb-12 gap-4 sm:gap-6">
                 <div>
-                  <h2 className="text-4xl font-bold mb-3">Quem usa, recomenda</h2>
-                  <p className="text-slate-400 text-xl">Veja como o Relaciona tem transformado o processo comercial de outras empresas.</p>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3">Quem usa, recomenda</h2>
+                  <p className="text-slate-400 text-base sm:text-lg md:text-xl">Veja como o Relaciona tem transformado o processo comercial de outras empresas.</p>
                 </div>
                 <div className="flex gap-3">
                   <button onClick={() => scroll(testimonialCarouselRef, 'left')} className="p-3 bg-blue-600 border border-blue-600 rounded-full text-slate-300 hover:text-white hover:border-blue-500 hover:bg-blue-600 transition-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
@@ -273,12 +279,12 @@ export default function Home() {
 
           {/* ==================== SLIDE 8: Contato & Footer ==================== */}
           <div className="w-screen h-full flex items-center justify-center bg-blue-50 text-white shrink-0 relative">
-            <div className="w-full px-6 md:px-16 max-w-6xl mx-auto pt-24 pb-12 flex flex-col h-full justify-between">
+            <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-6xl mx-auto pt-16 sm:pt-24 pb-12 flex flex-col h-full justify-between">
 
-              <div className="flex flex-col md:flex-row gap-16 grow items-center">
-                <div className="flex-1 space-y-8">
-                  <h2 className="text-5xl font-extrabold text-blue-600">Pronto para transformar suas vendas?</h2>
-                  <p className="text-slate-400 text-xl leading-relaxed">
+              <div className="flex flex-col md:flex-row gap-8 sm:gap-12 lg:gap-16 grow items-center">
+                <div className="flex-1 space-y-4 sm:space-y-8">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-600">Pronto para transformar suas vendas?</h2>
+                  <p className="text-slate-400 text-base sm:text-lg md:text-xl leading-relaxed">
                     Entre em contato com a nossa equipe hoje mesmo e descubra como o Relaciona pode automatizar o seu negócio.
                   </p>
                   <div className="pt-4">
@@ -348,6 +354,8 @@ export default function Home() {
         />
 
       </div>
+
+      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} />
     </div>
   );
 }
