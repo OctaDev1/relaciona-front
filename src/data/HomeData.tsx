@@ -3,7 +3,7 @@ import type { TabData, TeamMember, TabId } from "../types/HomeTypes";
 
 export const TABS: TabData[] = [
   { id: 'relaciona', label: 'Relaciona CRM', title: 'Relaciona', subtitle: 'Controle total da sua operação comercial.', ctaText: 'Conheça o sistema', ctaLink: '#', imageGradient: 'from-blue-100 to-blue-50' },
-  { id: 'oportunidades', label: 'Oportunidades', title: 'Gestão de Vendas', subtitle: 'Acompanhe cada etapa do seu funil e feche mais negócios.', ctaText: 'Explorar funil', ctaLink: '#', imageGradient: 'from-cyan-100 to-blue-50' },
+  { id: 'oportunidades', label: 'Oportunidades', title: 'Gestão de Vendas', subtitle: 'Acompanhe cada etapa do seu funil e feche mais negócios.', ctaText: 'Explorar oportunidades', ctaLink: '#', imageGradient: 'from-cyan-100 to-blue-50' },
   { id: 'metricas', label: 'Métricas e BI', title: 'Dados Precisos', subtitle: 'Tome decisões baseadas em relatórios gerados em tempo real.', ctaText: 'Ver relatórios', ctaLink: '#', imageGradient: 'from-indigo-100 to-blue-50' },
   { id: 'equipe', label: 'Gestão de Equipe', title: 'Trabalho Colaborativo', subtitle: 'Organize permissões, delegue tarefas e unifique seu time.', ctaText: 'Gerenciar time', ctaLink: '#', imageGradient: 'from-sky-100 to-white' }
 ];

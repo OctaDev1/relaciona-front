@@ -4,11 +4,14 @@ import { TeamCard } from '../../components/teamcard/TeamCard';
 import { TestimonialCard } from '../../components/testimonialcard/TestimonialCard';
 import { MENU_ITEMS, getTabIcon, TEAM_MEMBERS } from '../../data/HomeData';
 import { RelatoriosModal } from '../../components/modal/RelatoriosModal';
+import { OportunidadesModal } from '../../components/modal/OportunidadesModal';
 
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOportunidadesOpen, setIsOportunidadesOpen] = useState(false);
+
 
   const featureCarouselRef = useRef<HTMLDivElement>(null);
   const testimonialCarouselRef = useRef<HTMLDivElement>(null);
@@ -127,14 +130,17 @@ export default function Home() {
                 <h1 className="text-5xl md:text-7xl font-extrabold text-blue-600 tracking-tight">Gestão de Vendas</h1>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">Acompanhe cada etapa do seu funil e feche mais negócios.</h2>
                 <div className="pt-4">
-                  <a href="#" className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group">
-                    Explorar funil
+                  <button 
+                    onClick={() => setIsOportunidadesOpen(true)}
+                    className="inline-flex items-center text-blue-600 font-bold text-lg hover:text-blue-800 transition-colors group cursor-pointer"
+                  >
+                    Explorar oportunidades
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="flex-1 w-full flex justify-center">
-                <div className="w-full max-w-lg aspect-video rounded-3xl bg-linear-to-brrom-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8">
+                <div className="w-full max-w-lg aspect-video rounded-3xl bg-linear-to-br from-cyan-100 to-blue-50 shadow-2xl border border-gray-100 flex items-center justify-center p-8">
                   <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-500">
                     {getTabIcon('oportunidades')}
                   </div>
@@ -330,8 +336,9 @@ export default function Home() {
 
         </div>
 
-        {/* Modal renderizado dentro do container fixo principal */}
+        {/* Modais renderizados dentro do container fixo principal */}
         <RelatoriosModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <OportunidadesModal isOpen={isOportunidadesOpen} onClose={() => setIsOportunidadesOpen(false)} />
 
       </div>
     </div>
